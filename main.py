@@ -15,19 +15,26 @@ import requests
 class Example(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.spn_x, self.spn_y = 0.005, 0.005
+        self.spn_x, self.spn_y = 10,10
         self.initUI()
 
-    def getImage(self):
+    def getImage(self, running=True):
         api_server = "http://static-maps.yandex.ru/1.x/"
 
-        lon = self.wight.text()
-        lat = self.longitude.text()
+        if running:
 
-        if not lon:
-            lon = r(360) - 180
-        if not lat:
-            lat = r(360) - 180
+            lat = self.wight.text()
+            lon = self.longitude.text()
+
+            if not lat:
+                lat = 0
+            if not lon:
+                lon = 0
+        else:
+            lon = 55.703118
+            lat = 7.530887
+
+        print(lon,lat)
 
         params = {
             "ll": ",".join([str(lon), str(lat)]),
@@ -50,7 +57,7 @@ class Example(QMainWindow):
         super().__init__()
         uic.loadUi('01.ui', self)
 
-        self.getImage()
+        self.getImage(False)
         self.pixmap = QPixmap(self.map_file)
         self.image = QLabel(self)
         self.image.move(0, 0)
