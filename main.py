@@ -1,19 +1,20 @@
 import os
 import sys
 
+from PyQt5 import uic
+
 import requests
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel
+from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel
 
 SCREEN_SIZE = [600, 450]
 
 import requests
 
 
-
-class Example(QWidget):
-    def init(self):
-        super().init()
+class Example(QMainWindow):
+    def __init__(self):
+        super().__init__()
         self.getImage()
         self.initUI()
 
@@ -43,14 +44,13 @@ class Example(QWidget):
             file.write(response.content)
 
     def initUI(self):
-        self.setGeometry(100, 100, *SCREEN_SIZE)
-        self.setWindowTitle('Отображение карты')
+        super().__init__()
+        uic.loadUi('01.ui', self)
 
-        ## Изображение
         self.pixmap = QPixmap(self.map_file)
         self.image = QLabel(self)
         self.image.move(0, 0)
-        self.image.resize(600, 450)
+        self.image.resize(600, 600)
         self.image.setPixmap(self.pixmap)
 
     def closeEvent(self, event):
@@ -58,7 +58,7 @@ class Example(QWidget):
         os.remove(self.map_file)
 
 
-if name == 'main':
+if __name__ == '__main__':
     app = QApplication(sys.argv)
     ex = Example()
     ex.show()
