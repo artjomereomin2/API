@@ -59,7 +59,7 @@ class Example(QMainWindow):
         self.getImage(False)
         self.pixmap = QPixmap(self.map_file)
         self.image = QLabel(self)
-        self.image.move(0, 10)
+        self.image.move(0, 200)
         self.image.resize(SCREEN_SIZE[0],SCREEN_SIZE[1]-200)
         self.image.setPixmap(self.pixmap)
 
