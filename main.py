@@ -31,8 +31,8 @@ class Example(QMainWindow):
             if not lon:
                 lon = 0
         else:
-            lon = 55.703118
-            lat = 7.530887
+            lon = 7.530887
+            lat = 55.703118
 
         print(lon,lat)
 
@@ -60,7 +60,7 @@ class Example(QMainWindow):
         self.getImage(False)
         self.pixmap = QPixmap(self.map_file)
         self.image = QLabel(self)
-        self.image.move(0, 0)
+        self.image.move(0, 10)
         self.image.resize(600, 600)
         self.image.setPixmap(self.pixmap)
 
