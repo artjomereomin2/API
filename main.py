@@ -3,11 +3,10 @@ import sys
 
 from PyQt5 import uic
 
-from random import randrange as r
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel
 
-SCREEN_SIZE = [600, 450]
+SCREEN_SIZE = [350,450]
 
 import requests
 
@@ -20,19 +19,19 @@ class Example(QMainWindow):
 
     def getImage(self, running=True):
         api_server = "http://static-maps.yandex.ru/1.x/"
-
+        print(123)
         if running:
 
             lat = self.wight.text()
             lon = self.longitude.text()
 
             if not lat:
-                lat = 0
+                lat = 55.703118
             if not lon:
-                lon = 0
+                lon = 7.530887
         else:
-            lon = 55.703118
-            lat = 7.530887
+            lon = 7.530887
+            lat = 55.703118
 
         print(lon,lat)
 
@@ -60,8 +59,8 @@ class Example(QMainWindow):
         self.getImage(False)
         self.pixmap = QPixmap(self.map_file)
         self.image = QLabel(self)
-        self.image.move(0, 0)
-        self.image.resize(600, 600)
+        self.image.move(0, 200)
+        self.image.resize(SCREEN_SIZE[0],SCREEN_SIZE[1]-200)
         self.image.setPixmap(self.pixmap)
 
         self.button_to_teleport.clicked.connect(self.getImage)
