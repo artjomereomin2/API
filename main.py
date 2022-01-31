@@ -3,7 +3,7 @@ import sys
 
 from PyQt5 import uic
 
-import requests
+from random import randrange as r
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel
 
@@ -15,20 +15,23 @@ import requests
 class Example(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.getImage()
+        self.spn_x, self.spn_y = 0.005, 0.005
         self.initUI()
 
     def getImage(self):
         api_server = "http://static-maps.yandex.ru/1.x/"
 
-        lon = 37.530887
-        lat = 55.703118
-        spn_x = 0.005
-        spn_y = 0.005
+        lon = self.wight.text()
+        lat = self.longitude.text()
+
+        if not lon:
+            lon = r(360) - 180
+        if not lat:
+            lat = r(360) - 180
 
         params = {
             "ll": ",".join([str(lon), str(lat)]),
-            "spn": ",".join([str(spn_x), str(spn_y)]),
+            "spn": ",".join([str(self.spn_x), str(self.spn_y)]),
             "l": "map"
         }
         response = requests.get(api_server, params=params)
@@ -47,11 +50,14 @@ class Example(QMainWindow):
         super().__init__()
         uic.loadUi('01.ui', self)
 
+        self.getImage()
         self.pixmap = QPixmap(self.map_file)
         self.image = QLabel(self)
         self.image.move(0, 0)
         self.image.resize(600, 600)
         self.image.setPixmap(self.pixmap)
+
+        self.button_to_teleport.clicked.connect(self.getImage)
 
     def closeEvent(self, event):
         """При закрытии формы подчищаем за собой"""
