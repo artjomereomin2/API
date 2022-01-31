@@ -17,21 +17,24 @@ class Example(QMainWindow):
         self.spn_x, self.spn_y = 10,10
         self.initUI()
 
-    def getImage(self, running=True):
+    def getImage(self):
         api_server = "http://static-maps.yandex.ru/1.x/"
         print(123)
-        if running:
 
-            lat = self.wight.text()
-            lon = self.longitude.text()
+        lat = self.wight.text()
+        lon = self.longitude.text()
 
-            if not lat:
-                lat = 55.703118
-            if not lon:
-                lon = 7.530887
-        else:
-            lon = 7.530887
+        print(lon,lat)
+
+        if not lat:
             lat = 55.703118
+        else:
+            lat = float(lat)
+        if not lon:
+            lon = 7.530887
+        else:
+            lon = float(lon)
+
 
         print(lon,lat)
 
@@ -52,16 +55,22 @@ class Example(QMainWindow):
         with open(self.map_file, "wb") as file:
             file.write(response.content)
 
+        pixmap = QPixmap(self.map_file)
+        self.image.setPixmap(pixmap)
+
     def initUI(self):
         super().__init__()
         uic.loadUi('01.ui', self)
 
-        self.getImage(False)
-        self.pixmap = QPixmap(self.map_file)
         self.image = QLabel(self)
+
+        self.getImage()
+
+        pixmap = QPixmap(self.map_file)
+
         self.image.move(0, 200)
         self.image.resize(SCREEN_SIZE[0],SCREEN_SIZE[1]-200)
-        self.image.setPixmap(self.pixmap)
+        self.image.setPixmap(pixmap)
 
         self.button_to_teleport.clicked.connect(self.getImage)
 
